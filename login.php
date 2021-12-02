@@ -10,7 +10,9 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
  
 // Include config file
 require_once "config.php";
- 
+$mysqli->select_db("group4710");
+
+
 // Define variables and initialize with empty values
 $username = $password = "";
 $username_err = $password_err = $login_err = "";
@@ -31,16 +33,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $password = trim($_POST["password"]);
     }
-    
+
+    $db = $mysqli->query("select database()");
+    echo $db;
+
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
+        echo "hello";
         // Prepare a select statement
-        $sql = "SELECT id, username, password FROM Users WHERE username = ?";
-        
+        $sql = "SELECT id, username, password FROM users WHERE username = ?";
         if($stmt = $mysqli->prepare($sql)){
+            echo "ttttt";
             // Bind variables to the prepared statement as parameters
             $stmt->bind_param("s", $param_username);
-            
             // Set parameters
             $param_username = $username;
             
@@ -50,11 +55,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $stmt->store_result();
                 
                 // Check if username exists, if yes then verify password
-                if($stmt->num_rows == 1){                    
+                if($stmt->num_rows == 1){   
+                    echo "test1";                 
                     // Bind result variables
                     $stmt->bind_result($id, $username, $hashed_password);
                     if($stmt->fetch()){
-                        if(password_verify($password, $hashed_password)){
+                        echo $hashed_password;
+                        #if(password_verify($password, $hashed_password)){ 
+                        if($password == $hashed_password){
                             // Password is correct, so start a new session
                             session_start();
                             
@@ -64,6 +72,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $username;                            
                             
                             // Redirect user to welcome page
+                            echo "success";
                             header("Location: welcome.php");
                         } else{
                             // Password is not valid, display a generic error message
@@ -77,10 +86,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
-
-            // Close statement
-            $stmt->close();
         }
+        mysqli_report(MYSQLI_REPORT_ALL);
+        // Close statement
+        $stmt->close();
+        
     }
     
     // Close connection
