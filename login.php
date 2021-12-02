@@ -1,5 +1,17 @@
 <?php
 // Initialize the session
+
+function clearStoredResults(){
+    global $mysqli;
+    
+    do {
+         if ($res = $mysqli->store_result()) {
+           $res->free();
+         }
+    } while ($mysqli->more_results() && $mysqli->next_result());        
+    
+}
+
 session_start();
  
 // Check if the user is already logged in, if yes then redirect him to welcome page
@@ -10,8 +22,6 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
  
 // Include config file
 require_once "config.php";
-$mysqli->select_db("group4710");
-
 
 // Define variables and initialize with empty values
 $username = $password = "";
@@ -34,16 +44,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password = trim($_POST["password"]);
     }
 
-    $db = $mysqli->query("select database()");
-    echo $db;
-
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
-        echo "hello";
         // Prepare a select statement
         $sql = "SELECT id, username, password FROM users WHERE username = ?";
+        clearStoredResults();
         if($stmt = $mysqli->prepare($sql)){
-            echo "ttttt";
             // Bind variables to the prepared statement as parameters
             $stmt->bind_param("s", $param_username);
             // Set parameters
@@ -56,7 +62,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 // Check if username exists, if yes then verify password
                 if($stmt->num_rows == 1){   
-                    echo "test1";                 
                     // Bind result variables
                     $stmt->bind_result($id, $username, $hashed_password);
                     if($stmt->fetch()){
@@ -72,7 +77,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $username;                            
                             
                             // Redirect user to welcome page
-                            echo "success";
                             header("Location: welcome.php");
                         } else{
                             // Password is not valid, display a generic error message
@@ -86,8 +90,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
+        } else {
+            die ("Mysql Error: " . $mysqli->error);
         }
-        mysqli_report(MYSQLI_REPORT_ALL);
         // Close statement
         $stmt->close();
         
