@@ -13,5 +13,6 @@ if ($mysqli->connect_error) {
 
 # create tables and superuser
 $mysqli->multi_query($sql);
+while ($mysqli->next_result());
 
 ?>

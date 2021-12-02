@@ -1,17 +1,6 @@
 <?php
 // Initialize the session
 
-function clearStoredResults(){
-    global $mysqli;
-    
-    do {
-         if ($res = $mysqli->store_result()) {
-           $res->free();
-         }
-    } while ($mysqli->more_results() && $mysqli->next_result());        
-    
-}
-
 session_start();
  
 // Check if the user is already logged in, if yes then redirect him to welcome page
@@ -48,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
         $sql = "SELECT id, username, password FROM users WHERE username = ?";
-        clearStoredResults();
+        #clearStoredResults();
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
             $stmt->bind_param("s", $param_username);
