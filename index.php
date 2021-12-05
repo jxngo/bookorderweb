@@ -14,6 +14,7 @@ require_once "db_connect.php";
 $email = $password = "";
 $email_err = $password_err = $login_err = "";
 
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     # check for empty email field
     if(empty(trim($_POST["email"]))) {
@@ -30,41 +31,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if(empty($email_err) && empty($password_err)) {
-        $sql = "SELECT id, email, password FROM users WHERE email = ?";
-
+        $sql = "SELECT * FROM `users` WHERE email='$email' AND password='$password'";
         if($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("s", $param_email);
-
-            $param_email = $email;
             if($stmt->execute()) {
                 $stmt->store_result();
                 if($stmt->num_rows == 1) {
-                    $stmt->bind_result($id, $email, $hashed_password);
-                    if($stmt->fetch()) {
-                        if(password_verify($password, $hashed_password)) {
-                            session_start();
-
-                            $_SESSION['loggedin'] = true;
-                            $_SESSION['id'] = $id;
-                            $_SESSION['email'] = $email;
-
-                            header("location: welcome.php");
-                        } else {
-                            $login_err = "Invalid login or password.";
-                        }
-                    }
-                } else {
+                    session_start();
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['id'] = $id;
+                    $_SESSION['email'] = $email;
+                    // if acctype is admin or client
+                    header("location: welcome.php");
+                }
+                else {
                     $login_err = "Invalid login or password.";
                 }
-            } else {
-                echo "Oops! Something went wrong!";
+                $stmt->close();
             }
-            $stmt->close();
         }
     }
     $conn->close();
-
 }
+
 
 
 ?>
