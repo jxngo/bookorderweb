@@ -4,7 +4,7 @@ session_start();
  
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: index.php");
+    header("location: ../");
     exit;
 }
 ?>
@@ -27,8 +27,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <a href="" class="btn btn-primary">Placeholder</a>
     </p>
     <p>
-        <a href="reset_password.php" class="btn btn-danger ml-3">Change Your Password</a>
-        <a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a> 
+        <a href="../reset_password.php" class="btn btn-danger ml-3">Change Your Password</a>
+        <a href="../logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a> 
     </p>
 </body>
 </html>

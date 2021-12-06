@@ -5,15 +5,16 @@ session_start();
 # redirect if already logged in 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     if($_SESSION['acctype'] == "professor") {
-        header("location: professor.php");
+        header("location: /professor");
     } else if($_SESSION['acctype'] == "staff") {
-        header("location: staff.php");
+        header("location: /staff");
     }
     exit;
 }
 
 # otherwise go ahead and connect to database
-require_once "db_connect.php";
+require_once "utils/db_connect.php";
+require_once "utils/utils.php";
 
 $email = $password = "";
 
@@ -53,9 +54,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION['lastname'] = $lastname;
                         # if acctype is staff or professor
                         if($acctype == "staff") {
-                            header("location: staff.php");
+                            header("location: /staff");
                         } else {
-                            header("location: professor.php");
+                            header("location: /professor");
                         }
                     }
                 }
@@ -104,7 +105,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <div class="login-form">
-    <form action="index.php" method="post">
+    <form action="/" method="post">
         <h2 class="text-center">Book Order Login</h2>        
         <div class="form-group">
             <input type="text" name="email" class="form-control" placeholder="Email" required="required">

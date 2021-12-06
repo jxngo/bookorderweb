@@ -3,8 +3,8 @@
 session_start();
  
 // Include config file
-require_once "db_connect.php";
-require_once "utils.php";
+require_once "utils/db_connect.php";
+require_once "utils/utils.php";
  
 
 // Define variables and initialize with empty values
@@ -115,7 +115,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <button type="submit" class="btn btn-primary btn-block">Request Temporary Password</button>
         </div>  
     </form>
-    <p class="text-center">Remember? <a href="index.php"> Return back to login</a></p>
+    <p class="text-center">Remember? <a href="/"> Return back to login</a></p>
 </div>
 </body>
 </html>

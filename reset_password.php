@@ -9,7 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
  
 // Include config file
-require_once "db_connect.php";
+require_once "utils/db_connect.php";
  
 
 // Define variables and initialize with empty values
@@ -106,9 +106,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </style>
 </head>
 <body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link active" href="/">Home</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto" href="/">Book Order</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <?php echo $_SESSION["email"]; ?>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="reset_password.php">Reset Password</a>
+              <a class="dropdown-item" href="logout.php">Logout</a>
+            </div>
+          </div>
+        </ul>
+    </div>
+</nav>
+
 <div class="login-form">
     <form action="index.php" method="post">
-        <h2 class="text-center">Book Order Login</h2>        
+        <h2 class="text-center">Reset Password</h2>        
         <div class="form-group">
             <input type="password" name="new_password" class="form-control" placeholder="New Password" required="required">
         </div>
