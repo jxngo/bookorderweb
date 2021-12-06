@@ -20,12 +20,12 @@ $email = $password = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     # check for empty email field
-    if(!empty(trim($_POST["email"]))) {
+    if(isset($_POST["email"]) && !empty(trim($_POST["email"]))) {
         $email = trim($_POST["email"]);
     }
 
     # check for empty password field
-    if(!empty(trim($_POST["password"]))) {
+    if(isset($_POST["password"]) && !empty(trim($_POST["password"]))) {
         $password = trim($_POST["password"]);
     }
 
@@ -116,7 +116,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </div>
         <div class="clearfix">
-            <a href="#" class="float-left">Forgot Password?</a> 
+            <a href="forgot_password.php" class="float-left">Forgot Password?</a> 
         </div>        
     </form>
     <p class="text-center"><a href="register.php">Create an Account</a></p>
