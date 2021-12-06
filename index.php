@@ -16,26 +16,21 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 require_once "db_connect.php";
 
 $email = $password = "";
-$email_err = $password_err = $login_err = "";
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     # check for empty email field
-    if(empty(trim($_POST["email"]))) {
-        $email_err = "Please enter an email.";
-    } else {
+    if(!empty(trim($_POST["email"]))) {
         $email = trim($_POST["email"]);
     }
 
     # check for empty password field
-    if(empty(trim($_POST["password"]))) {
-        $password_err = "Please enter a password.";
-    } else {
+    if(!empty(trim($_POST["password"]))) {
         $password = trim($_POST["password"]);
     }
 
-    if(empty($email_err) && empty($password_err)) {
-        $sql = "SELECT id, type, firstname, lastname FROM `users` WHERE email=? AND password=?";
+    if(!empty($email) && !empty($password)) {
+        $sql = "SELECT id, acctype, firstname, lastname FROM `users` WHERE email=? AND password=?";
         if($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("ss", $param_email, $param_password);
 
@@ -63,8 +58,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                             header("location: professor.php");
                         }
                     }
-                } else {
-                    $login_err = "Invalid login or password.";
                 }
                 $stmt->close();
             }
@@ -72,35 +65,61 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $conn->close();
 }
-
-
-
 ?>
-<html lang="en">
 
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-	<title>Login</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Group4710 Book Order</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<style>
+    .login-form {
+        width: 340px;
+        margin: 50px auto;
+        font-size: 15px;
+    }
+    .login-form form {
+        margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    .form-control, .btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .btn {        
+        font-size: 15px;
+        font-weight: bold;
+    }
+</style>
 </head>
 <body>
-	<div class="container">
-        <h2>Login | Bookorder</h2>
-		<form action="index.php" method="post">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" name="email" class="form-control" placeholder="jane@doe.com">
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="">
-            </div>
-                <button type="submit" name="login_btn" class="btn btn-primary">Login</button>
-        </form>
-        No Account? <a class="register" href="register.php">Register Instead</a>
-	</div>
+<div class="login-form">
+    <form action="index.php" method="post">
+        <h2 class="text-center">Book Order Login</h2>        
+        <div class="form-group">
+            <input type="text" name="email" class="form-control" placeholder="Email" required="required">
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="Password" required="required">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </div>
+        <div class="clearfix">
+            <a href="#" class="float-left">Forgot Password?</a> 
+        </div>        
+    </form>
+    <p class="text-center"><a href="register.php">Create an Account</a></p>
+</div>
 </body>
 </html>
