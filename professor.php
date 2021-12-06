@@ -4,7 +4,7 @@ session_start();
  
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: login.php");
+    header("location: index.php");
     exit;
 }
 ?>
@@ -20,7 +20,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </style>
 </head>
 <body>
-    <h1 class="my-5">Hi, <b><?php echo htmlspecialchars($_SESSION["email"]); ?></b> Welcome to our site.</h1>
+    <h1 class="my-5">Hello Professor <b><?php echo htmlspecialchars($_SESSION["lastname"]); ?></b> Welcome to our site.</h1>
     <p>
         <a href="" class="btn btn-primary">Placeholder</a>
         <a href="" class="btn btn-primary">Placeholder</a>

@@ -4,7 +4,11 @@ session_start();
 
 # redirect if already logged in 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    header("location: welcome.php");
+    if($_SESSION['acctype'] == "professor") {
+        header("location: professor.php");
+    } else if($_SESSION['acctype'] == "staff") {
+        header("location: staff.php");
+    }
     exit;
 }
 
@@ -31,19 +35,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if(empty($email_err) && empty($password_err)) {
-        $sql = "SELECT * FROM `users` WHERE email='$email' AND password='$password'";
+        $sql = "SELECT id, type, firstname, lastname FROM `users` WHERE email=? AND password=?";
         if($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("ss", $param_email, $param_password);
+
+            # set params
+            $param_email = $email;
+            $param_password = $password;
+
             if($stmt->execute()) {
                 $stmt->store_result();
                 if($stmt->num_rows == 1) {
-                    session_start();
-                    $_SESSION['loggedin'] = true;
-                    $_SESSION['id'] = $id;
-                    $_SESSION['email'] = $email;
-                    // if acctype is admin or client
-                    header("location: welcome.php");
-                }
-                else {
+                    $stmt->bind_result($id, $acctype, $firstname, $lastname);
+                    if($stmt->fetch()) {
+                        session_start();
+
+                        $_SESSION['loggedin'] = true;
+                        $_SESSION['id'] = $id;
+                        $_SESSION['email'] = $email;
+                        $_SESSION['acctype'] = $acctype;
+                        $_SESSION['firstname'] = $firstname;
+                        $_SESSION['lastname'] = $lastname;
+                        # if acctype is staff or professor
+                        if($acctype == "staff") {
+                            header("location: staff.php");
+                        } else {
+                            header("location: professor.php");
+                        }
+                    }
+                } else {
                     $login_err = "Invalid login or password.";
                 }
                 $stmt->close();
