@@ -16,7 +16,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Prepare a select statement
         $sql = "SELECT id FROM users WHERE email = ?";
         
-        if($stmt = $mysqli->prepare($sql)){
+        if($stmt = $conn->prepare($sql)){
             // Bind variables to the prepared statement as parameters
             $stmt->bind_param("s", $param_email);
             
@@ -41,6 +41,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $stmt->close();
         }
     }
+    // Validate firstname
+	if(empty(trim($_POST["firstname"]))) {
+		$firstname_err = "Please enter a first name";
+	} else {
+		$firstname = trim($_POST["firstname"]);
+	}
+	
+	// Validate lastname
+	if(empty(trim($_POST["lastname"]))) {
+		$lastname_err = "Please enter a last name";
+	} else {
+		$lastname = trim($_POST["lastname"]);
+	}
+
+    // Validate email
+    if(empty(trim($_POST["email"]))) {
+		$email_err = "Please enter an email.";
+	} else {
+		$email = trim($_POST["email"]);
+	}
     
     // Validate password
     if(empty(trim($_POST["password"]))){
@@ -50,20 +70,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $password = trim($_POST["password"]);
     }
-
-	// Validate firstname
-	if(empty(trim($_POST["firstname"]))) {
-		$firstname_err = "Please enter a first name";
-	} else {
-		$firstname = trim($_POST["firstname"]);
-	}
-	
-	// Validate lastname
-	if(empty(trim($_POST["lastname"]))) {
-		$firstname_err = "Please enter a last name";
-	} else {
-		$firstname = trim($_POST["lastname"]);
-	}
 
     // Validate confirm password
     if(empty(trim($_POST["confirm_password"]))){
@@ -79,15 +85,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO users (type, email, password, firstname, lastname) VALUES ('professor', ?, ?, ?, ?)";
+        $sql = "INSERT INTO users(type, email, password, firstname, lastname) VALUES ('professor', ?, ?, ?, ?)";
          
-        if($stmt = $mysqli->prepare($sql)){
+        if($stmt = $conn->prepare($sql)){
             // Bind variables to the prepared statement as parameters
             $stmt->bind_param("ssss", $param_email, $param_password, $param_firstname, $param_lastname);
             
             // Set parameters
             $param_email = $email;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            #$param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_password = $password;
 			$param_firstname = $firstname;
 			$param_lastname = $lastname;
             
@@ -105,7 +112,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Close connection
-    $mysqli->close();
+    $conn->close();
 ?>
 
 <html lang="en">
