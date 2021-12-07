@@ -22,9 +22,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <body>
     <h1 class="my-5">Hello Professor <b><?php echo htmlspecialchars($_SESSION["lastname"]); ?></b> Welcome to our site.</h1>
     <p>
-        <a href="" class="btn btn-primary">Placeholder</a>
-        <a href="" class="btn btn-primary">Placeholder</a>
-        <a href="" class="btn btn-primary">Placeholder</a>
+        <a href="new_form.php" class="btn btn-primary">Submit New Book Request</a>
+        <br></br>
+        <a href="edit_form.php" class="btn btn-primary">View and Edit Current Book Request</a>
     </p>
     <p>
         <a href="reset_password.php" class="btn btn-danger ml-3">Change Your Password</a>
