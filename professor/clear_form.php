@@ -5,7 +5,7 @@
 
     $email = $_POST['clear_form'];
     if($conn->query("DELETE FROM bookrequests WHERE email = '$email'")) {
-        header("location: edit_form.php");
+        header("location: /professor/edit_form.php");
     }
 
     $stmt->close();

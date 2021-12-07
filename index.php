@@ -5,9 +5,9 @@ session_start();
 # redirect if already logged in 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     if(isset($_SESSION['acctype']) && $_SESSION['acctype'] == "professor") {
-        header("location: /professor");
+        header("location: /professor/");
     } else if(isset($_SESSION['acctype']) && $_SESSION['acctype'] == "staff") {
-        header("location: /staff");
+        header("location: /staff/");
     }
     exit;
 }
@@ -54,9 +54,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION['lastname'] = $lastname;
                         # if acctype is staff or professor
                         if($acctype == "staff") {
-                            header("location: /staff");
+                            header("location: /staff/");
                         } else {
-                            header("location: /professor");
+                            header("location: /professor/");
                         }
                     }
                 }

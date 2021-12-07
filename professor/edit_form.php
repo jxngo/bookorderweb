@@ -59,8 +59,8 @@
     </nav>
     <h1 class="text-center">Existing Book Request</h1>
     <div class="btn-group">
-        <form action ="new_form.php"><button class="btn btn-success" type="submit">Add New Book Request</button></form>
-        <form action="clear_form.php" method="post"><td><button class="btn btn-primary" type="submit" name="clear_form" value=<?php echo $email ?>>Clear All</button></td></form> 
+        <form action ="/professor/new_form.php"><button class="btn btn-success" type="submit">Add New Book Request</button></form>
+        <form action="/professor/clear_form.php" method="post"><td><button class="btn btn-primary" type="submit" name="clear_form" value=<?php echo $email ?>>Clear All</button></td></form> 
     </div>
     <table class="table table-bordered table-hover">
         <thead>
@@ -84,7 +84,7 @@
                 <td><?php echo $row['edition']; ?></td>
                 <td><?php echo $row['publisher']; ?></td>
                 <td><?php echo $row['isbn']; ?></td> 
-                <form action="delete_form.php" method="post"><td><button type="submit" class="btn btn-danger" name="del_isbn" value=<?php echo $row['isbn'] ?>>Delete</button></td></form> 
+                <form action="/professor/delete_form.php" method="post"><td><button type="submit" class="btn btn-danger" name="del_isbn" value=<?php echo $row['isbn'] ?>>Delete</button></td></form> 
                                 
             </tr>
         <?php } ?>
