@@ -147,7 +147,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <a class="nav-link" href="manage_reminders.php">Manage Reminders</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="manage_bookrequests.php">Manage Book Requests</a>
+                <a class="nav-link" href="manage_bookrequests.php">Manage Book Requests</a>
             </li>
         </ul>
     </div>

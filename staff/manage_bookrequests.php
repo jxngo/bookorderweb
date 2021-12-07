@@ -1,5 +1,18 @@
 <?php
-session_start()
+session_start();
+
+require_once "../utils/db_connect.php";
+require_once "../utils/utils.php";
+
+$semester = "fall2021";
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $semester = trim($_POST['semester']);
+}
+$sql = "SELECT cid, semester, booktitle, authornames, edition, publisher, isbn FROM bookrequests WHERE semester='$semester'";
+$result = $conn->query($sql);
+$conn->close();
+$_SESSION['current_semester'] = $semester;
+
 ?>
 
 <!DOCTYPE html>
@@ -15,30 +28,7 @@ session_start()
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<style>
-    .login-form {
-        width: 340px;
-        margin: 50px auto;
-        font-size: 15px;
-    }
-    .login-form form {
-        margin-bottom: 15px;
-        background: #f7f7f7;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-    }
-    .login-form h2 {
-        margin: 0 0 15px;
-    }
-    .form-control, .btn {
-        min-height: 38px;
-        border-radius: 2px;
-    }
-    .btn {        
-        font-size: 15px;
-        font-weight: bold;
-    }
-</style>
+
 </head>
 
 <body>
@@ -78,21 +68,49 @@ session_start()
         </ul>
     </div>
 </nav>
+<br>
+<form id="export" action="export_bookorder.php" method="post"></form>
 
-<div class="login-form">
-    <form action="index.php" method="post">
-        <h2 class="text-center">Reset Password</h2>        
-        <div class="form-group">
-            <input type="password" name="new_password" class="form-control" placeholder="New Password" required="required">
+<form class="form-inline" action="manage_bookrequests.php" method="POST">
+    <div class="form-group mb-2">
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="semester" class="sr-only">Semester</label>
+            <input type="text" class="form-control" id="semester" name="semester" placeholder="Semester e.g. 'fall2021'" value=<?php echo $semester ?>>
         </div>
-        <div class="form-group">
-            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm New Password" required="required">
+        <div class="form-group mb-2">
+            <button type="submit" class="btn btn-primary mb-2">View Semester</button>
+            <button type="submit" form="export" class="btn btn-secondary mb-2 float-right">Export</button>
         </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Reset</button>
-        </div>   
-    </form>
-</div>
+
+    </div>
+</form>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>CID</th>
+            <th>Semester</th>
+            <th>Book Title</th>
+            <th>Author</th>
+            <th>Edition</th>
+            <th>Publisher</th>
+            <th>ISBN</th>
+        </tr>
+    </thead>
+    <tbody>
+      <?php while ($row = $result->fetch_assoc()) { ?>
+          <tr>
+            <td><?php echo $row['cid']; ?></td>
+            <td><?php echo $row['semester']; ?></td>
+            <td><?php echo $row['booktitle']; ?></td>
+            <td><?php echo $row['authornames']; ?></td>
+            <td><?php echo $row['edition']; ?></td>
+            <td><?php echo $row['publisher']; ?></td>
+            <td><?php echo $row['isbn']; ?></td>
+          </tr>
+      <?php } ?>
+    </tbody>
+</table>
 
 </body>
 </html>

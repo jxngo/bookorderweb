@@ -122,13 +122,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <div class="login-form">
     <form action="invite_professor.php" method="post">
-        <h2 class="text-center">Remind Professors</h2> 
+        <h2 class="text-center">Invite Professor</h2> 
         <div class="form-group">
-        <label for="date">Remind Date</label>
-        <input type="date" id="date" name="trip-start" value="2021-12-07" min="2021-12-07">
+            <input type="text" name="email" class="form-control" placeholder="Email" required="required">
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Send Reminder</button>
+            <button type="submit" class="btn btn-primary btn-block">Send Invite</button>
         </div>      
     </form>
 </div>

@@ -99,7 +99,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="manage_faculty.php">Manage Faculty</a>
+                <a class="nav-link active" href="manage_faculty.php">Manage Faculty</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="manage_reminders.php">Manage Reminders</a>
