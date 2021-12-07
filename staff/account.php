@@ -3,7 +3,7 @@
 session_start();
  
 // Check if the user is logged in, otherwise redirect to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["acctype"] != "staff"){
     header("location: /");
     exit;
 }
@@ -69,7 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $conn->close();
 }
 ?>
- 
+
 <html lang="en">
 <head>
 <meta charset="utf-8">

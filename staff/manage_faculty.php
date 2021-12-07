@@ -1,5 +1,12 @@
 <?php
-session_start()
+session_start();
+
+require_once "../utils/db_connect.php";
+require_once "../utils/utils.php";
+
+$sql = "SELECT acctype, email, firstname, lastname FROM users WHERE NOT email='group4710@gmail.com' AND NOT email='" . $_SESSION['email'] . "'";
+$result = $conn->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -58,6 +65,30 @@ session_start()
 <div class="jumbotron text-center">
 <h1 class="display-4">Manage Faculty Page</h1>
 </div>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Account Type</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Account Operations</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+      <?php while ($row = $result->fetch_assoc()) { ?>
+          <tr>
+            <td><?php echo $row['email']; ?></td>
+            <td><?php echo $row['acctype']; ?></td>
+            <td><?php echo $row['firstname']; ?></td>
+            <td><?php echo $row['lastname']; ?></td>
+            <form action="account.php" method="post"><td><button type="submit" class="btn btn-primary" name="account_email" value=<?php echo $row['email'] ?>><i class="fa fa-eye"></i>View</button></td></form>
+          </tr>
+      <?php } ?>
+    </tbody>
+</table>
 
 </body>
 </html>
