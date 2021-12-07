@@ -4,9 +4,9 @@ session_start();
 
 # redirect if already logged in 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    if($_SESSION['acctype'] == "professor") {
+    if(isset($_SESSION['acctype']) && $_SESSION['acctype'] == "professor") {
         header("location: /professor");
-    } else if($_SESSION['acctype'] == "staff") {
+    } else if(isset($_SESSION['acctype']) && $_SESSION['acctype'] == "staff") {
         header("location: /staff");
     }
     exit;

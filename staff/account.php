@@ -1,6 +1,7 @@
 <?php
 // Initialize the session
 session_start();
+
  
 // Check if the user is logged in, otherwise redirect to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["acctype"] != "staff"){
@@ -9,64 +10,40 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 }
  
 // Include config file
-require_once "utils/db_connect.php";
+require_once "../utils/db_connect.php";
  
-
-// Define variables and initialize with empty values
-$new_password = $confirm_password = "";
-$new_password_err = $confirm_password_err = "";
- 
+$email = $firstname = $lastname = $acctype = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate new password
-    if(empty(trim($_POST["new_password"]))){
-        $new_password_err = "Please enter the new password.";     
-    } elseif(strlen(trim($_POST["new_password"])) < 6){
-        $new_password_err = "Password must have atleast 6 characters.";
-    } else{
-        $new_password = trim($_POST["new_password"]);
+
+
+    if(isset($_POST['account_email'])) {
+        $email = trim($_POST['account_email']);
     }
-    
-    // Validate confirm password
-    if(empty(trim($_POST["confirm_password"]))){
-        $confirm_password_err = "Please confirm the password.";
-    } else{
-        $confirm_password = trim($_POST["confirm_password"]);
-        if(empty($new_password_err) && ($new_password != $confirm_password)){
-            $confirm_password_err = "Password did not match.";
-        }
-    }
-        
-    // Check input errors before updating the database
-    if(empty($new_password_err) && empty($confirm_password_err)){
-        // Prepare an update statement
-        $sql = "UPDATE users SET password = ? WHERE email = ?";
-        
-        if($stmt = $conn->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("ss", $param_password, $param_email);
-            
-            // Set parameters
-            $param_password = $new_password;
-            $param_email = $_SESSION["email"];
-            
-            // Attempt to execute the prepared statement
-            if($stmt->execute()){
-                // Password updated successfully. Destroy the session, and redirect to login page
-                session_destroy();
-                header("location: index.php");
-                exit();
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
+
+    if($firstname != "" && $lastname != "") {
+        echo "update db";
+
+    } else {
+        echo "pull data";
+        $sql = "SELECT firstname, lastname, acctype FROM users WHERE email=?";
+        if($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("s", $email);
+            if($stmt->execute()) {
+                $stmt->store_result();
+                if($stmt->num_rows == 1) {
+                    $stmt->bind_result($firstname, $lastname, $acctype);
+                    if($stmt->fetch()) {
+                        # success
+                    }
+                }
             }
 
-            // Close statement
             $stmt->close();
         }
+
+        $conn->close();
     }
-    
-    // Close connection
-    $conn->close();
 }
 ?>
 
@@ -111,12 +88,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link active" href="/">Home</a>
+                <a class="nav-link" href="manage_faculty.php">Manage Faculty</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="manage_reminders.php">Manage Reminders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="manage_bookrequests.php">Manage Book Requests</a>
             </li>
         </ul>
     </div>
     <div class="mx-auto order-0">
-        <a class="navbar-brand mx-auto" href="/">Book Order</a>
+        <a class="navbar-brand mx-auto" href="/staff">Book Order</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -128,8 +111,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               <?php echo $_SESSION["email"]; ?>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="reset_password.php">Reset Password</a>
-              <a class="dropdown-item" href="logout.php">Logout</a>
+              <a class="dropdown-item" href="../reset_password.php">Reset Password</a>
+              <a class="dropdown-item" href="../logout.php">Logout</a>
             </div>
           </div>
         </ul>
@@ -137,17 +120,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </nav>
 
 <div class="login-form">
-    <form action="index.php" method="post">
-        <h2 class="text-center">Reset Password</h2>        
+    <form action="account.php" method="post">
+        <h2 class="text-center">Manage User</h2>        
         <div class="form-group">
-            <input type="password" name="new_password" class="form-control" placeholder="New Password" required="required">
+            <label for="email">Email address</label>
+            <input type="text" name="email" class="form-control" value=<?php echo $email;?> required="required" placeholder=<?php echo $email;?>>
         </div>
         <div class="form-group">
-            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm New Password" required="required">
+            <label for="firstname">First Name</label>
+            <input type="text" name="firstname" class="form-control" value=<?php echo $firstname;?> required="required" placeholder=<?php echo $firstname;?>>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Reset</button>
-        </div>   
+            <label for="lastname">Last Name</label>
+            <input type="text" name="lastname" class="form-control" value=<?php echo $lastname;?> required="required" placeholder=<?php echo $lastname;?>>
+        </div>
+        <div class="form-group">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="stafforprofessor" id="staff" value="staff" <?php echo $acctype == "staff" ? "checked" : ""; ?>>
+                <label class="form-check-label" for="staff">Staff</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="stafforprofessor" id="professor" value="professor" <?php echo $acctype == "professor" ? "checked" : ""; ?>>
+                <label class="form-check-label" for="professor">Professor</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+        </div>
     </form>
 </div>
 </body>

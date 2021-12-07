@@ -7,6 +7,8 @@ require_once "../utils/utils.php";
 $sql = "SELECT acctype, email, firstname, lastname FROM users WHERE NOT email='group4710@gmail.com' AND NOT email='" . $_SESSION['email'] . "'";
 $result = $conn->query($sql);
 
+$email = $acctype = $firstname = $lastname = "";
+
 ?>
 
 <!DOCTYPE html>
