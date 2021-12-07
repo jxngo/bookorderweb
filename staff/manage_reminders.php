@@ -122,7 +122,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </nav>
 
 <div class="login-form">
-    <form action="/staff/invite_professor.php" method="post">
+    <form action="/staff/manage_reminders.php" method="post">
         <h2 class="text-center">Remind Professors</h2> 
         <div class="form-group">
         <label for="date">Remind Date</label>
