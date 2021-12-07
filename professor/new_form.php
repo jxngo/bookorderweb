@@ -70,10 +70,10 @@ $conn->close();
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link active" href="new_form.php">Submit New Book Request</a>
+                <a class="nav-link active" href="/professor/new_form.php">Submit New Book Request</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="edit_form.php">Manage Book Requests</a>
+                <a class="nav-link" href="/professor/edit_form.php">Manage Book Requests</a>
             </li>
         </ul>
     </div>
@@ -98,7 +98,7 @@ $conn->close();
     </div>
     </nav>
     <body class="book-form">
-        <form action="new_form.php" method="post">
+        <form action="/professor/new_form.php" method="post">
             <h1 class="text-center">New Book Request</h1>
             <div class="form-group">
                 <div class="form-row">

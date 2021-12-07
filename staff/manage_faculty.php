@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $_SESSION['account_firstname'] = $row['firstname'];
             $_SESSION['account_lastname'] = $row['lastname'];
 
-            header("location: account.php");
+            header("location: /staff/account.php");
         }
     }
 }
@@ -48,13 +48,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link active" href="manage_faculty.php">Manage Faculty</a>
+                <a class="nav-link active" href="/staff/manage_faculty.php">Manage Faculty</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="manage_reminders.php">Manage Reminders</a>
+                <a class="nav-link" href="/staff/manage_reminders.php">Manage Reminders</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="manage_bookrequests.php">Manage Book Requests</a>
+                <a class="nav-link" href="/staff/manage_bookrequests.php">Manage Book Requests</a>
             </li>
         </ul>
     </div>
@@ -72,7 +72,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="../reset_password.php">Reset Password</a>
-              <a class="dropdown-item" href="register_staff.php">Create Staff Account</a>
+              <a class="dropdown-item" href="/staff/register_staff.php">Create Staff Account</a>
+              <a class="dropdown-item" href="/staff/invite_professor.php">Invite Professor</a>
               <a class="dropdown-item" href="../logout.php">Logout</a>
             </div>
           </div>
@@ -98,7 +99,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <td><?php echo $row['acctype']; ?></td>
             <td><?php echo $row['firstname']; ?></td>
             <td><?php echo $row['lastname']; ?></td>
-            <form action="manage_faculty.php" method="post"><td><button type="submit" class="btn btn-primary" name="account_email" value=<?php echo $row['email']?>><i class="fa fa-eye"></i>View</button></td></form>
+            <form action="/staff/manage_faculty.php" method="post"><td><button type="submit" class="btn btn-primary" name="account_email" value=<?php echo $row['email']?>><i class="fa fa-eye"></i>View</button></td></form>
           </tr>
       <?php } ?>
     </tbody>

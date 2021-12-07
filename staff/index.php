@@ -32,13 +32,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="manage_faculty.php">Manage Faculty</a>
+                <a class="nav-link" href="/staff/manage_faculty.php">Manage Faculty</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="manage_reminders.php">Manage Reminders</a>
+                <a class="nav-link" href="/staff/manage_reminders.php">Manage Reminders</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="manage_bookrequests.php">Manage Book Requests</a>
+                <a class="nav-link" href="/staff/manage_bookrequests.php">Manage Book Requests</a>
             </li>
         </ul>
     </div>
@@ -56,8 +56,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="../reset_password.php">Reset Password</a>
-              <a class="dropdown-item" href="register_staff.php">Create Staff Account</a>
-              <a class="dropdown-item" href="invite_professor.php">Invite Professor</a>
+              <a class="dropdown-item" href="/staff/register_staff.php">Create Staff Account</a>
+              <a class="dropdown-item" href="/staff/invite_professor.php">Invite Professor</a>
               <a class="dropdown-item" href="../logout.php">Logout</a>
             </div>
           </div>

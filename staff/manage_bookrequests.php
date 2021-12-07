@@ -62,6 +62,7 @@ $_SESSION['current_semester'] = $semester;
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="../reset_password.php">Reset Password</a>
               <a class="dropdown-item" href="register_staff.php">Create Staff Account</a>
+              <a class="dropdown-item" href="/staff/invite_professor.php">Invite Professor</a>
               <a class="dropdown-item" href="../logout.php">Logout</a>
             </div>
           </div>
@@ -69,7 +70,7 @@ $_SESSION['current_semester'] = $semester;
     </div>
 </nav>
 <br>
-<form id="export" action="export_bookorder.php" method="post"></form>
+<form id="export" action="/staff/export_bookorder.php" method="post"></form>
 
 <form class="form-inline" action="manage_bookrequests.php" method="POST">
     <div class="form-group mb-2">

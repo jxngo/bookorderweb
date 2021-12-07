@@ -5,7 +5,7 @@
 
     $isbn = $_POST['del_isbn'];
     if($conn->query("DELETE FROM bookrequests WHERE isbn = $isbn")) {
-        header("location: edit_form.php");
+        header("location: /professor/edit_form.php");
     }
 
     $stmt->close();

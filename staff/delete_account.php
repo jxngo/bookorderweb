@@ -9,7 +9,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "DELETE FROM users WHERE email='$email'";
     if($conn->query($sql)) {
         $conn->close();
-        header("location: manage_faculty.php");
+        header("location: /staff/manage_faculty.php");
     }
 }
 
