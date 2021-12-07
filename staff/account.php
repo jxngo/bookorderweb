@@ -12,38 +12,49 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 // Include config file
 require_once "../utils/db_connect.php";
  
-$email = $firstname = $lastname = $acctype = "";
+$new_email = $new_firstname = $new_lastname = $new_acctype = "";
+
+$email = $_SESSION['account_email'];
+$firstname = $_SESSION['account_firstname'];
+$lastname = $_SESSION['account_lastname'];
+$acctype = $_SESSION['account_acctype'];
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-
-    if(isset($_POST['account_email'])) {
-        $email = trim($_POST['account_email']);
-    }
-
-    if($firstname != "" && $lastname != "") {
-        echo "update db";
-
+    # get new email
+    if(isset($_POST['new_email']) && !empty($_POST['new_email'])) {
+        $new_email = trim($_POST['new_email']);
     } else {
-        echo "pull data";
-        $sql = "SELECT firstname, lastname, acctype FROM users WHERE email=?";
-        if($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("s", $email);
-            if($stmt->execute()) {
-                $stmt->store_result();
-                if($stmt->num_rows == 1) {
-                    $stmt->bind_result($firstname, $lastname, $acctype);
-                    if($stmt->fetch()) {
-                        # success
-                    }
-                }
-            }
-
-            $stmt->close();
-        }
-
-        $conn->close();
+        $new_email = $email;
     }
+
+    # get new firstname
+    if(isset($_POST['new_firstname']) && !empty($_POST['new_firstname'])) {
+        $new_firstname = trim($_POST['new_firstname']);
+    } else {
+        $new_firstname = $firstname;
+    }
+    
+    # get new lastname
+    if(isset($_POST['new_lastname']) && !empty($_POST['new_lastname'])) {
+        $new_lastname = trim($_POST['new_lastname']);
+    } else {
+        $new_lastname = $lastname;
+    }
+
+    # get new acctype
+    if(isset($_POST['new_acctype']) && !empty($_POST['new_acctype'])) {
+        $new_acctype = trim($_POST['new_acctype']);
+    } else {
+        $new_acctype = $acctype;
+    }
+
+
+    $sql = "UPDATE users SET email='" . $new_email . "', firstname='" . $new_firstname . "', lastname='" . $new_lastname . "', acctype='" . $new_acctype . "' WHERE email='" . $email . "'";
+    if($conn->query($sql)) {
+        header("location: manage_faculty.php");
+    }
+    $conn->close();
 }
 ?>
 
@@ -112,6 +123,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="../reset_password.php">Reset Password</a>
+              <a class="dropdown-item" href="register_staff.php">Create Staff Account</a>
               <a class="dropdown-item" href="../logout.php">Logout</a>
             </div>
           </div>
@@ -124,28 +136,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <h2 class="text-center">Manage User</h2>        
         <div class="form-group">
             <label for="email">Email address</label>
-            <input type="text" name="email" class="form-control" value=<?php echo $email;?> required="required" placeholder=<?php echo $email;?>>
+            <input type="text" name="new_email" class="form-control" value=<?php echo $email;?>  placeholder=<?php echo $email;?>>
         </div>
         <div class="form-group">
             <label for="firstname">First Name</label>
-            <input type="text" name="firstname" class="form-control" value=<?php echo $firstname;?> required="required" placeholder=<?php echo $firstname;?>>
+            <input type="text" name="new_firstname" class="form-control" value=<?php echo $firstname;?>  placeholder=<?php echo $firstname;?>>
         </div>
         <div class="form-group">
             <label for="lastname">Last Name</label>
-            <input type="text" name="lastname" class="form-control" value=<?php echo $lastname;?> required="required" placeholder=<?php echo $lastname;?>>
+            <input type="text" name="new_lastname" class="form-control" value=<?php echo $lastname;?> placeholder=<?php echo $lastname;?>>
         </div>
         <div class="form-group">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="stafforprofessor" id="staff" value="staff" <?php echo $acctype == "staff" ? "checked" : ""; ?>>
+                <input class="form-check-input" type="radio" name="new_acctype" id="staff" value="staff" <?php echo $acctype == "staff" ? "checked" : ""; ?>>
                 <label class="form-check-label" for="staff">Staff</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="stafforprofessor" id="professor" value="professor" <?php echo $acctype == "professor" ? "checked" : ""; ?>>
+                <input class="form-check-input" type="radio" name="new_acctype" id="professor" value="professor" <?php echo $acctype == "professor" ? "checked" : ""; ?>>
                 <label class="form-check-label" for="professor">Professor</label>
             </div>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">Save</button>
+        </div>
+        <div class="form-group">
+        <form action="delete_account.php" method="post"><button type="submit" class="btn btn-danger btn-block">Delete</button></form>
         </div>
     </form>
 </div>
