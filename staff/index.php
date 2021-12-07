@@ -55,6 +55,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="../reset_password.php">Reset Password</a>
+              <a class="dropdown-item" href="register_staff.php">Create Staff Account</a>
               <a class="dropdown-item" href="../logout.php">Logout</a>
             </div>
           </div>

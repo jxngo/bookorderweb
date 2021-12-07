@@ -9,6 +9,23 @@ $result = $conn->query($sql);
 
 $email = $acctype = $firstname = $lastname = "";
 
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $email = trim($_POST['account_email']);
+
+    while($row = $result->fetch_assoc()) {
+        if($row['email'] == $email) {
+            $_SESSION['account_email'] = $email;
+            $_SESSION['account_acctype'] = $row['acctype'];
+            $_SESSION['account_firstname'] = $row['firstname'];
+            $_SESSION['account_lastname'] = $row['lastname'];
+
+            header("location: account.php");
+        }
+    }
+
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -57,16 +74,13 @@ $email = $acctype = $firstname = $lastname = "";
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="../reset_password.php">Reset Password</a>
+              <a class="dropdown-item" href="register_staff.php">Create Staff Account</a>
               <a class="dropdown-item" href="../logout.php">Logout</a>
             </div>
           </div>
         </ul>
     </div>
 </nav>
-
-<div class="jumbotron text-center">
-<h1 class="display-4">Manage Faculty Page</h1>
-</div>
 
 <table class="table table-bordered table-hover">
     <thead>
@@ -86,7 +100,7 @@ $email = $acctype = $firstname = $lastname = "";
             <td><?php echo $row['acctype']; ?></td>
             <td><?php echo $row['firstname']; ?></td>
             <td><?php echo $row['lastname']; ?></td>
-            <form action="account.php" method="post"><td><button type="submit" class="btn btn-primary" name="account_email" value=<?php echo $row['email'] ?>><i class="fa fa-eye"></i>View</button></td></form>
+            <form action="manage_faculty.php" method="post"><td><button type="submit" class="btn btn-primary" name="account_email" value=<?php echo $row['email']?>><i class="fa fa-eye"></i>View</button></td></form>
           </tr>
       <?php } ?>
     </tbody>
