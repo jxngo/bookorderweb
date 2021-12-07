@@ -2,11 +2,15 @@
 session_start();
 
 require_once "../utils/db_connect.php";
+require_once "../utils/utils.php";
 
-$sql = "DELETE FROM users WHERE email='". $_SESSION['account_email'] . "'";
-if($conn->query($sql)) {
-    print "test";
-    $conn->close();
-    #header("location: manage_faculty.php");
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_SESSION['account_email'];
+    $sql = "DELETE FROM users WHERE email='$email'";
+    if($conn->query($sql)) {
+        $conn->close();
+        header("location: manage_faculty.php");
+    }
 }
+
 ?>

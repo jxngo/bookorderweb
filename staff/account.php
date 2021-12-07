@@ -131,6 +131,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </div>
 </nav>
 
+<form id="delete" action="delete_account.php" method="post"></form>
+
 <div class="login-form">
     <form action="account.php" method="post">
         <h2 class="text-center">Manage User</h2>        
@@ -158,10 +160,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">Save</button>
-        </div>
-        <div class="form-group">
-        <form action="delete_account.php" method="post"><button type="submit" class="btn btn-danger btn-block">Delete</button></form>
-        </div>
+            <button type="submit" form="delete" class="btn btn-danger btn-block" id="delete_acc_email" value=<?php echo $email ?> >Delete</button>
+        </div>  
     </form>
 </div>
 </body>
