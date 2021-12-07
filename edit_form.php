@@ -2,7 +2,7 @@
     session_start();
     require_once "db_connect.php";
     $email = $_SESSION['email'];
-    $sql = "SELECT cid, booktitle, authornames, edition, publisher, isbn FROM bookrequests WHERE email = '$email'";
+    $sql = "SELECT cid, semester, booktitle, authornames, edition, publisher, isbn FROM bookrequests WHERE email = '$email'";
     $result = $conn->query($sql);
 ?>
 
@@ -36,6 +36,7 @@
             <thead>
                 <tr>
                     <th>CID</th>
+                    <th>Semester</th>
                     <th>Book Title</th>
                     <th>Author</th>
                     <th>Edition</th>
@@ -47,6 +48,7 @@
             <?php while ($row = $result->fetch_assoc()) { ?>
                 <tr>
                     <td><?php echo $row['cid']; ?></td>
+                    <td><?php echo $row['semester']; ?></td>
                     <td><?php echo $row['booktitle']; ?></td>
                     <td><?php echo $row['authornames']; ?></td>
                     <td><?php echo $row['edition']; ?></td>

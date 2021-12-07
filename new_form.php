@@ -4,22 +4,24 @@ session_start();
 require_once "db_connect.php";
 
 #define variables and initialize with empty values
-$title = $cid = $author = $edition = $publisher = $isbn = "";
+$title = $cid = $semester = $author = $edition = $publisher = $isbn = "";
 $email = $_SESSION["email"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST["cid"]) && !empty(trim($_POST["cid"]))) $cid = trim($_POST["cid"]);
+    if(isset($_POST["semester"]) && !empty(trim($_POST["semester"]))) $semester = trim($_POST["semester"]);
     if(isset($_POST["title"]) && !empty(trim($_POST["title"]))) $title = trim($_POST["title"]);
     if(isset($_POST["author"]) && !empty(trim($_POST["author"]))) $author = trim($_POST["author"]);
     if(isset($_POST["edition"]) && !empty(trim($_POST["edition"]))) $edition= trim($_POST["edition"]);
     if(isset($_POST["publisher"]) && !empty(trim($_POST["publisher"]))) $publisher= trim($_POST["publisher"]);
     if(isset($_POST["isbn"]) && !empty(trim($_POST["isbn"]))) $isbn= trim($_POST["isbn"]);
     
-    if (!empty($cid) && !empty($title) && !empty($author) && !empty($edition) && !empty($publisher) && !empty($isbn)) {
-        $sql = "INSERT INTO bookrequests(cid, email, booktitle, authornames, edition, publisher, isbn) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    if (!empty($cid) && !empty($semester) && !empty($title) && !empty($author) && !empty($edition) && !empty($publisher) && !empty($isbn)) {
+        $sql = "INSERT INTO bookrequests(cid, semester, email, booktitle, authornames, edition, publisher, isbn) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("sssssss",$param_cid,$param_email,$param_title,$param_author,$param_edition,$param_publisher,$param_isbn);
+            $stmt->bind_param("ssssssss",$param_cid, $param_semester, $param_email,$param_title,$param_author,$param_edition,$param_publisher,$param_isbn);
             $param_cid = $cid;
+            $param_semester = $semester;
             $param_email = $email;
             $param_title = $title;
             $param_author = $author;
@@ -71,6 +73,10 @@ $conn->close();
                 <div class="form-row">
                     <text>Class ID:</text>
                     <input type="text" name="cid" class="form-control" placeholder="CID" required="required">
+                </div>
+                <div class="form-row">
+                    <text>Semester:</text>
+                    <input type="text" name="semester" class="form-control" placeholder="Semester" required="required">
                 </div>
                 <div class="form-row">
                     <text>Title:</text>
