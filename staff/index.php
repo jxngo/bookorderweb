@@ -23,6 +23,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
+
 </head>
 
 <body>
@@ -56,6 +57,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="../reset_password.php">Reset Password</a>
               <a class="dropdown-item" href="register_staff.php">Create Staff Account</a>
+              <a class="dropdown-item" href="invite_professor.php">Invite Professor</a>
               <a class="dropdown-item" href="../logout.php">Logout</a>
             </div>
           </div>
