@@ -8,7 +8,7 @@ $semester = "fall2021";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $semester = trim($_POST['semester']);
 }
-$sql = "SELECT cid, semester, booktitle, authornames, edition, publisher, isbn FROM bookrequests WHERE semester='$semester'";
+$sql = "SELECT cid, email, semester, booktitle, authornames, edition, publisher, isbn FROM bookrequests WHERE semester='$semester'";
 $result = $conn->query($sql);
 $conn->close();
 $_SESSION['current_semester'] = $semester;
@@ -90,6 +90,7 @@ $_SESSION['current_semester'] = $semester;
     <thead>
         <tr>
             <th>CID</th>
+            <th>Professor Email</th>
             <th>Semester</th>
             <th>Book Title</th>
             <th>Author</th>
@@ -102,6 +103,7 @@ $_SESSION['current_semester'] = $semester;
       <?php while ($row = $result->fetch_assoc()) { ?>
           <tr>
             <td><?php echo $row['cid']; ?></td>
+            <td><?php echo $row['email']; ?></td>
             <td><?php echo $row['semester']; ?></td>
             <td><?php echo $row['booktitle']; ?></td>
             <td><?php echo $row['authornames']; ?></td>
