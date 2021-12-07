@@ -4,28 +4,29 @@ session_start();
 
 # redirect if already logged in 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    if($_SESSION['acctype'] == "professor") {
-        header("location: professor.php");
-    } else if($_SESSION['acctype'] == "staff") {
-        header("location: staff.php");
+    if(isset($_SESSION['acctype']) && $_SESSION['acctype'] == "professor") {
+        header("location: /professor");
+    } else if(isset($_SESSION['acctype']) && $_SESSION['acctype'] == "staff") {
+        header("location: /staff");
     }
     exit;
 }
 
 # otherwise go ahead and connect to database
-require_once "db_connect.php";
+require_once "utils/db_connect.php";
+require_once "utils/utils.php";
 
 $email = $password = "";
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     # check for empty email field
-    if(!empty(trim($_POST["email"]))) {
+    if(isset($_POST["email"]) && !empty(trim($_POST["email"]))) {
         $email = trim($_POST["email"]);
     }
 
     # check for empty password field
-    if(!empty(trim($_POST["password"]))) {
+    if(isset($_POST["password"]) && !empty(trim($_POST["password"]))) {
         $password = trim($_POST["password"]);
     }
 
@@ -53,9 +54,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION['lastname'] = $lastname;
                         # if acctype is staff or professor
                         if($acctype == "staff") {
-                            header("location: staff.php");
+                            header("location: /staff");
                         } else {
-                            header("location: professor.php");
+                            header("location: /professor");
                         }
                     }
                 }
@@ -104,7 +105,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <div class="login-form">
-    <form action="index.php" method="post">
+    <form action="/" method="post">
         <h2 class="text-center">Book Order Login</h2>        
         <div class="form-group">
             <input type="text" name="email" class="form-control" placeholder="Email" required="required">
@@ -116,7 +117,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </div>
         <div class="clearfix">
-            <a href="#" class="float-left">Forgot Password?</a> 
+            <a href="forgot_password.php" class="float-left">Forgot Password?</a> 
         </div>        
     </form>
     <p class="text-center"><a href="register.php">Create an Account</a></p>

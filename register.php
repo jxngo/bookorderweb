@@ -1,6 +1,6 @@
 <?php
 // Include config file
-require_once "db_connect.php";
+require_once "utils/db_connect.php";
  
 // Define variables and initialize with empty values
 $email = $password = $firstname = $lastname = "";
@@ -80,7 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if($stmt->execute()){
                 // Redirect to login page
-                header("location: index.php");
+                header("location: /");
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
@@ -149,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <button type="submit" class="btn btn-primary btn-block">Register</button>
         </div>      
     </form>
-    <p class="text-center">Have an account already? <a href="index.php">Login</a></p>
+    <p class="text-center">Have an account already? <a href="/">Login</a></p>
 </div>
 </body>
 </html>
